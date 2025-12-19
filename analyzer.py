@@ -689,22 +689,44 @@ class AdvancedPcapAnalyzer:
 
 def main():
     print("=" * 80)
-    print("ПРОФЕСІЙНИЙ АНАЛІЗАТОР ЗАГРОЗ МЕРЕЖЕВОЇ БЕЗПЕКИ")
+    print("ПРОФЕСІЙНИЙ АНАЛІЗАТОР ЗАГРОЗ v2.0")
+    print("Оптимізовано для великих файлів та зашифрованого трафіку")
     print("=" * 80)
 
     if len(sys.argv) < 2:
-        print("\nВикористання: python pcap_analyzer.py <файл.pcap> [локальна_мережа]")
+        print("\nВикористання: python pcap_analyzer.py <файл.pcap> [опції]")
+        print("\nОпції:")
+        print("  --network <CIDR>    Локальна мережа (default: 192.168.0.0/16)")
+        print("  --threat-intel      Увімкнути перевірку через Threat Intelligence")
         print("\nПриклади:")
         print("  python pcap_analyzer.py capture.pcap")
-        print("  python pcap_analyzer.py capture.pcap 10.0.0.0/8")
-        print("  python pcap_analyzer.py capture.pcap 172.16.0.0/12")
+        print("  python pcap_analyzer.py capture.pcap --network 10.0.0.0/8")
+        print("  python pcap_analyzer.py large_file.pcap --threat-intel")
+        print("\nОСОБЛИВОСТІ:")
+        print("  ✓ Потокова обробка - не навантажує RAM")
+        print("  ✓ TCP Stream Reassembly - виявляє фрагментовані атаки")
+        print("  ✓ TLS Fingerprinting (JA3) - аналіз зашифрованого трафіку")
+        print("  ✓ Покращена евристика - менше false positives")
         sys.exit(1)
 
     pcap_file = sys.argv[1]
-    local_network = sys.argv[2] if len(sys.argv) > 2 else "192.168.0.0/16"
+    local_network = "192.168.0.0/16"
+    use_threat_intel = False
 
-    analyzer = AdvancedPcapAnalyzer(pcap_file, local_network)
+    i = 2
+    while i < len(sys.argv):
+        if sys.argv[i] == '--network' and i + 1 < len(sys.argv):
+            local_network = sys.argv[i + 1]
+            i += 2
+        elif sys.argv[i] == '--threat-intel':
+            use_threat_intel = True
+            i += 1
+        else:
+            i += 1
+
+    analyzer = AdvancedPcapAnalyzer(pcap_file, local_network, use_threat_intel)
     analyzer.run_analysis()
+
 
 if __name__ == "__main__":
     main()
