@@ -694,14 +694,14 @@ def main():
     print("=" * 80)
 
     if len(sys.argv) < 2:
-        print("\nВикористання: python pcap_analyzer.py <файл.pcap> [опції]")
+        print("\nВикористання: python analyzer.py <файл.pcap> [опції]")
         print("\nОпції:")
         print("  --network <CIDR>    Локальна мережа (default: 192.168.0.0/16)")
         print("  --threat-intel      Увімкнути перевірку через Threat Intelligence")
         print("\nПриклади:")
-        print("  python pcap_analyzer.py capture.pcap")
-        print("  python pcap_analyzer.py capture.pcap --network 10.0.0.0/8")
-        print("  python pcap_analyzer.py large_file.pcap --threat-intel")
+        print("  python analyzer.py capture.pcap")
+        print("  python analyzer.py capture.pcap --network 10.0.0.0/8")
+        print("  python analyzer.py large_file.pcap --threat-intel")
         print("\nОСОБЛИВОСТІ:")
         print("  ✓ Потокова обробка - не навантажує RAM")
         print("  ✓ TCP Stream Reassembly - виявляє фрагментовані атаки")
